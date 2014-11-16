@@ -21,7 +21,7 @@
     _tileScroller = [[RPTileScroller alloc] initWithSize:view.bounds.size];
     _tileScroller.position = CGPointMake(0,0);
     _tileScroller.dataSource = self;
-    _tileScroller.tileSize = CGSizeMake(16, 16);
+    _tileScroller.tileSize = CGSizeMake(10, 10);
     _tileScroller.backgroundNode.color = [UIColor blackColor];
     
     [self addChild:_tileScroller];
@@ -87,7 +87,7 @@
         node = [SKSpriteNode spriteNodeWithColor:color size:tileScroller.tileSize];
         node.identifier = idt;
         liveObjects++;
-        //NSLog(@"Live: %i",liveObjects);
+        NSLog(@"Live: %i",liveObjects);
     }
     
     return node;

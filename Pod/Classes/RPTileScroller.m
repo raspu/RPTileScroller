@@ -286,23 +286,32 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
     BOOL goOn = YES;
     
     do {
-        SKNode *node ;
+        SKNode *node;
         if(inverted)
         {
             node = [_xIndex objectAtIndex:0];
-            [_xIndex removeObjectAtIndex:0];
         }else
         {
             node = [_xIndex lastObject];
-            [_xIndex removeLastObject];
         }
+        
         CGPoint positionOnBkg = [self.scene convertPoint:node.position fromNode:_rootNode];
 
         if(positionOnBkg.x > _backgroundNode.size.width+_tileSize.width*2 || positionOnBkg.x < _tileSize.width*-2)
         {
             [node removeFromParent];
-            [self enqueueReusableNode:node withIdentifier:node.identifier];
+            
+            if(inverted)
+            {
+                [_xIndex removeObjectAtIndex:0];
+            }else
+            {
+                [_xIndex removeLastObject];
+                
+            }
+            
             [self yIndexRemoveObject:node];
+            [self enqueueReusableNode:node withIdentifier:node.identifier];
         }else
         {
             goOn = NO;
@@ -321,11 +330,9 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
         if(inverted)
         {
             node = [_yIndex objectAtIndex:0];
-            [_yIndex removeObjectAtIndex:0];
         }else
         {
             node = [_yIndex lastObject];
-            [_yIndex removeLastObject];
         }
         
         CGPoint positionOnBkg = [self.scene convertPoint:node.position fromNode:_rootNode];
@@ -333,8 +340,18 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
         if(positionOnBkg.y > _backgroundNode.size.height+_tileSize.height*2 || positionOnBkg.y < _tileSize.height*-2)
         {
             [node removeFromParent];
-            [self enqueueReusableNode:node withIdentifier:node.identifier];
+            
+            if(inverted)
+            {
+                [_yIndex removeObjectAtIndex:0];
+            }else
+            {
+                [_yIndex removeLastObject];
+
+            }
+            
             [self xIndexRemoveObject:node];
+            [self enqueueReusableNode:node withIdentifier:node.identifier];
         }else
         {
             goOn = NO;
