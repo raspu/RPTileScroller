@@ -11,6 +11,7 @@
 @interface GameScene ()
 {
     RPTileScroller *_tileScroller;
+    NSUInteger _opt;
 }
 @end
 
@@ -24,6 +25,8 @@
     _tileScroller.tileSize = CGSizeMake(10, 10);
     _tileScroller.backgroundNode.color = [UIColor blackColor];
     
+    _opt = 0;
+    
     [self addChild:_tileScroller];
 }
 
@@ -31,6 +34,7 @@
     /* Called when a touch begins */
     CGFloat dx = arc4random_uniform(60);
     CGFloat dy = arc4random_uniform(60);
+    _opt = (int)arc4random_uniform(5);
     _tileScroller.moveVector = CGVectorMake(dx-30,dy-30); 
 
 }
@@ -45,10 +49,32 @@
 - (SKNode *)tileScroller:(RPTileScroller *)tileScroller nodeForIndex:(CGPoint)index
 {
     static NSUInteger liveObjects = 0;
-    int rnd = arc4random_uniform(6);
     NSString *idt;
     UIColor *color;
     
+    int rnd;
+    switch (_opt)
+    {
+        case 0:
+            rnd = arc4random_uniform(6);
+            break;
+        case 1:
+            rnd = (abs((int)index.x) + abs((int)index.y))%6;
+            break;
+        case 2:
+            rnd = ( abs((int)index.x) * abs((int)index.y))%6;
+            break;
+        case 3:
+            rnd = ( abs((int)index.x) * abs((int)index.x) + abs((int)index.x) + abs((int)index.y))%6;
+            break;
+        case 4:
+            rnd = ( abs((int)index.y) * abs((int)index.y) + abs((int)index.x))%6;
+            break;
+            
+        default:
+            break;
+    }
+
     switch (rnd)
     {
         case 0:
@@ -80,6 +106,7 @@
             break;
     }
     
+
     SKSpriteNode *node = (SKSpriteNode *)[tileScroller dequeueReusableNodeWithIdentifier:idt];
     
     if(!node)
@@ -87,7 +114,7 @@
         node = [SKSpriteNode spriteNodeWithColor:color size:tileScroller.tileSize];
         node.identifier = idt;
         liveObjects++;
-        NSLog(@"Live: %i",liveObjects);
+        //NSLog(@"Live: %i",liveObjects);
     }
     
     return node;
