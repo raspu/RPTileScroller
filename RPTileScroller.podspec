@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "RPTileScroller"
-  s.version          = "0.1.0"
+  s.version          = "0.2.0"
   s.summary          = "SpriteKit Infinite Tile Scroller"
   s.description      = <<-DESC
                        A simple infinite tile scroller that uses a traditional, tableview's inspired, datasource.
