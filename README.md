@@ -49,7 +49,7 @@ Implement `tileScroller:nodeForIndex:` in the DataSource
 	    if(!node)
 	    {
 	    	//Configure your node here
-	        node = [SKSpriteNode spriteNodeWithColor:color size:tileScroller.tileSize];
+	        node = [SKSpriteNode spriteNodeWithColor:[UIColor redColor] size:tileScroller.tileSize];
 	        node.identifier = idt;
 	    }
 	    
