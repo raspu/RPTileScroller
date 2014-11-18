@@ -78,7 +78,7 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
         _availableNodes = [NSMutableDictionary dictionary];
         
         //Status
-        _currentIndex = CGPointMake(-2, -2);
+        _currentIndex = RPIndexPointMake(-2, -2);
     }
     return self;
 }
