@@ -9,11 +9,9 @@
 
 Pod::Spec.new do |s|
   s.name             = "RPTileScroller"
-  s.version          = "0.2.1"
+  s.version          = "0.2.2"
   s.summary          = "SpriteKit Infinite Tile Scroller"
-  s.description      = <<-DESC
-                       A simple infinite tile scroller that uses a traditional, tableview's inspired, datasource.
-                       DESC
+  s.description      = "A simple infinite tile scroller that follows a, tableview's inspired, datasource pattern."
   s.homepage         = "https://github.com/raspu/RPTileScroller"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
