@@ -9,8 +9,32 @@
 #import <SpriteKit/SpriteKit.h>
 #import "SKNode+Indentifier.h"
 
+
+/**
+ *  RP Index, equivalent to CGPoint but with NSInteger.
+ */
+struct RPIndexPoint{
+    NSInteger x;
+    NSInteger y;
+};
+typedef struct RPIndexPoint RPIndexPoint;
+
+CG_INLINE RPIndexPoint
+RPIndexPointMake(NSInteger x, NSInteger y)
+{
+    RPIndexPoint p;
+    p.x = x;
+    p.y = y;
+    return p;
+}
+
+
 @protocol RPTileScrollerDataSource;
 
+
+/**
+ *  RPTileScroller
+ */
 @interface RPTileScroller : SKCropNode
 @property (nonatomic,weak) id<RPTileScrollerDataSource> dataSource;
 @property (nonatomic,readonly) SKSpriteNode *backgroundNode; //Use this to give a texture or a color to the background. Do not change it position, unless you know what you are doing.
@@ -59,12 +83,12 @@
 @protocol RPTileScrollerDataSource <NSObject>
 
 /**
- *  Return the Node to be shown in the given index (Beware: The index 0,0 represent the top-left corner, and an index is a position in the tile array, it's not an actual coordinate). Use dequeueReusableNodeWithIdentifier: to get a reusable Node. If you return nil, an empty space will be shown.
+ *  Return the Node to be shown in the given index (Beware: The index 0,0 represent the bottom-left corner, and  is a position in the tile array, it's not an actual coordinate). Use dequeueReusableNodeWithIdentifier: to get a reusable Node. If you return nil, no node will be show.
  *
  *  @param index CGPoint to represent an index
  *
  *  @return SKNode
  */
-- (SKNode *)tileScroller:(RPTileScroller *)tileScroller nodeForIndex:(CGPoint)index;
+- (SKNode *)tileScroller:(RPTileScroller *)tileScroller nodeForIndex:(RPIndexPoint)index;
 
 @end

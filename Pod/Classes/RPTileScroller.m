@@ -30,11 +30,11 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
     SKNode *_rootNode;
     
     //Status
-    CGPoint _currentIndex;
+    RPIndexPoint _currentIndex;
     
     //Counts
-    NSUInteger _calculatedRows;
-    NSUInteger _calculatedCols;
+    NSInteger _calculatedRows;
+    NSInteger _calculatedCols;
     
     //Meta Data
     CGSize _selfSize;
@@ -136,7 +136,7 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
 
 - (void)update:(CFTimeInterval)currentTime
 {
-    CGPoint newIndex = CGPointMake(floor(_rootNode.position.x/_tileSize.width)*-1-2, floor(_rootNode.position.y/_tileSize.height)*-1-2);
+    RPIndexPoint newIndex = RPIndexPointMake(floor(_rootNode.position.x/_tileSize.width)*-1-2, floor(_rootNode.position.y/_tileSize.height)*-1-2);
     
     if(newIndex.x == _currentIndex.x && newIndex.y == _currentIndex.y)
         return; //Nothing to do!
@@ -152,7 +152,7 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
             {
                 for (int j=_currentIndex.y-1; j<_calculatedRows+_currentIndex.y+1; j++)
                 {
-                    CGPoint index = CGPointMake(i, j);
+                    RPIndexPoint index = RPIndexPointMake(i, j);
                     SKNode *node = [_dataSource tileScroller:self nodeForIndex:index];
                     if(node)
                         [self insertNode:node atIndex:index];
@@ -166,7 +166,7 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
                 for (int j=_currentIndex.y-1; j<_calculatedRows+_currentIndex.y+1; j++)
                 {
                     //NSLog(@"%i,%i",i,j);
-                    CGPoint index = CGPointMake(i, j);
+                    RPIndexPoint index = RPIndexPointMake(i, j);
                     SKNode *node = [_dataSource tileScroller:self nodeForIndex:index];
                     if(node)
                         [self insertNode:node atIndex:index];
@@ -187,7 +187,7 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
             {
                 for (int i=_currentIndex.x; i<_calculatedCols+_currentIndex.x; i++)
                 {
-                    CGPoint index = CGPointMake(i, j);
+                    RPIndexPoint index = RPIndexPointMake(i, j);
                     SKNode *node = [_dataSource tileScroller:self nodeForIndex:index];
                     if(node)
                         [self insertNode:node atIndex:index];
@@ -200,7 +200,7 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
             {
                 for (int i=_currentIndex.x; i<_calculatedCols+_currentIndex.x; i++)
                 {
-                    CGPoint index = CGPointMake(i, j);
+                    RPIndexPoint index = RPIndexPointMake(i, j);
                     SKNode *node = [_dataSource tileScroller:self nodeForIndex:index];
                     if(node)
                         [self insertNode:node atIndex:index];
@@ -212,12 +212,11 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
     }
     
     _currentIndex = newIndex;
-    
 }
 
 - (void)reloadData
 {
-    if(!_dataSource)
+    if(!_dataSource || _calculatedCols == 0 || _calculatedRows == 0)
         return;
     
     [_rootNode.children enumerateObjectsUsingBlock:^(SKNode *obj, NSUInteger idx, BOOL *stop) {
@@ -228,11 +227,11 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
     [_xIndex removeAllObjects];
     [_yIndex removeAllObjects];
     
-    for(int i=_currentIndex.x; i<_calculatedCols+_currentIndex.x; i++)
+    for(int i=_currentIndex.x; i<_currentIndex.x+_calculatedCols; i++)
     {
-        for (int j=_currentIndex.y; j<_calculatedRows+_currentIndex.y; j++)
+        for (int j=_currentIndex.y; j<_currentIndex.y+_calculatedRows; j++)
         {
-            CGPoint index = CGPointMake(i, j);
+            RPIndexPoint index = RPIndexPointMake(i, j);
             SKNode *node = [_dataSource tileScroller:self nodeForIndex:index];
             if(node)
                [self insertNode:node atIndex:index];
@@ -263,7 +262,7 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
     }
 }
 
-- (void)insertNode:(SKNode *)node atIndex:(CGPoint)point
+- (void)insertNode:(SKNode *)node atIndex:(RPIndexPoint)point
 {
 
     //NSLog(@"%f,%f",node.position.x,node.position.y);
@@ -285,7 +284,8 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
 {
     BOOL goOn = YES;
     
-    do {
+    while (_xIndex.count > 0 && goOn)
+    {
         SKNode *node;
         if(inverted)
         {
@@ -317,7 +317,7 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
             goOn = NO;
         }
         
-    } while (_xIndex.count > 0 && goOn);
+    }
     
 }
 
@@ -325,7 +325,8 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
 {
     BOOL goOn = YES;
     
-    do {
+    while (_yIndex.count > 0 && goOn)
+    {
         SKNode *node ;
         if(inverted)
         {
@@ -357,7 +358,7 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
             goOn = NO;
         }
         
-    } while (_yIndex.count > 0 && goOn);
+    }
     
 }
 

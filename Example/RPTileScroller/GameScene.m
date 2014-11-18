@@ -46,7 +46,7 @@
 
 #pragma mark - Tile Scroller Datasource
 
-- (SKNode *)tileScroller:(RPTileScroller *)tileScroller nodeForIndex:(CGPoint)index
+- (SKNode *)tileScroller:(RPTileScroller *)tileScroller nodeForIndex:(RPIndexPoint)index
 {
     static NSUInteger liveObjects = 0;
     NSString *idt;
@@ -59,16 +59,16 @@
             rnd = arc4random_uniform(6);
             break;
         case 1:
-            rnd = (abs((int)index.x) + abs((int)index.y))%6;
+            rnd = (abs(index.x) + abs(index.y))%6;
             break;
         case 2:
-            rnd = ( abs((int)index.x) * abs((int)index.y))%6;
+            rnd = ( abs(index.x) * abs(index.y))%6;
             break;
         case 3:
-            rnd = ( abs((int)index.x) * abs((int)index.x) + abs((int)index.x) + abs((int)index.y))%6;
+            rnd = ( abs(index.x) * abs(index.x) + abs(index.x) + abs(index.y))%6;
             break;
         case 4:
-            rnd = ( abs((int)index.y) * abs((int)index.y) + abs((int)index.x))%6;
+            rnd = ( abs(index.y) * abs(index.y) + abs(index.x))%6;
             break;
             
         default:
