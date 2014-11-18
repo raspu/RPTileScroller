@@ -59,7 +59,7 @@ Implement `tileScroller:nodeForIndex:` in the DataSource
     {
         node = [SKSpriteNode spriteNodeWithColor:[UIColor redColor] size:tileScroller.tileSize];
         node.identifier = idt;
-        //Configure your node here for index.x,index.y
+        //Configure your node here for position index.x,index.y
     }
     
     return node;
