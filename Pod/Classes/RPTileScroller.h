@@ -49,6 +49,10 @@ RPIndexPointMake(NSInteger x, NSInteger y)
  */
 @property (nonatomic) CGVector moveVector;
 
+/**
+ *  Use this property to change the origin from bottom-left to top-left
+ */
+@property (nonatomic) BOOL inverted;
 
 /**
  *  Designated initializer.

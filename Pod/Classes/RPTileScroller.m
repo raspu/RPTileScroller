@@ -78,7 +78,8 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
         _availableNodes = [NSMutableDictionary dictionary];
         
         //Status
-        _currentIndex = CGPointMake(-2, -2);
+        _currentIndex = RPIndexPointMake(-2, -2);
+        _inverted = NO;
     }
     return self;
 }
@@ -264,10 +265,10 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
 
 - (void)insertNode:(SKNode *)node atIndex:(RPIndexPoint)point
 {
-
-    //NSLog(@"%f,%f",node.position.x,node.position.y);
-    node.position = CGPointMake(point.x*_tileSize.width, point.y*_tileSize.height);
-
+    int posX = point.x;
+    int posY = (_inverted) ? _calculatedRows - point.y : point.y;
+    node.position = CGPointMake((float)posX*_tileSize.width, (float)posY*_tileSize.height);
+    
     [_xIndex insertObject:node atIndex:[self xIndexOfNode:node withSearchOptions:NSBinarySearchingInsertionIndex]];
     [_yIndex insertObject:node atIndex:[self yIndexOfNode:node withSearchOptions:NSBinarySearchingInsertionIndex]];
 
