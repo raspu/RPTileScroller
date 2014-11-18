@@ -48,7 +48,7 @@ _tileScroller.backgroundNode.color = [UIColor blackColor];
 Implement `tileScroller:nodeForIndex:` in the DataSource 
 
 ```objectivec
-- (SKNode *)tileScroller:(RPTileSc	roller *)tileScroller nodeForIndex:(CGPoint)index
+- (SKNode *)tileScroller:(RPTileSc	roller *)tileScroller nodeForIndex:(RPIndexPoint)index
 {
     //Use different identifiers for reusing nodes with the same content (like a tile map). 
     NSString *idt = @"Your node identifier";  
@@ -59,7 +59,7 @@ Implement `tileScroller:nodeForIndex:` in the DataSource
     {
         node = [SKSpriteNode spriteNodeWithColor:[UIColor redColor] size:tileScroller.tileSize];
         node.identifier = idt;
-        //Configure your node here
+        //Configure your node here for index.x,index.y
     }
     
     return node;
