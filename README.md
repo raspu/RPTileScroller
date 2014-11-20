@@ -65,7 +65,7 @@ Implement `tileScroller:nodeForIndex:` in the DataSource
     return node;
 }
 ```
-Call the update method each scene update.
+Call the update method every scene update.
 
 ```objectivec
 - (void)update:(CFTimeInterval)currentTime 
