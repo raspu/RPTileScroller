@@ -65,6 +65,13 @@ Implement `tileScroller:nodeForIndex:` in the DataSource
     return node;
 }
 ```
+Call the update method each scene update.
+
+```objectivec
+-(void)update:(CFTimeInterval)currentTime {
+    [_tileScroller update:currentTime];
+}
+```
 
 Scroll it!
 
