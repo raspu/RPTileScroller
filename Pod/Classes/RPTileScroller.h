@@ -49,6 +49,10 @@ RPIndexPointMake(NSInteger x, NSInteger y)
  */
 @property (nonatomic) CGVector moveVector;
 
+/**
+ *  Displacement vector, all tiles will be displaced instantly by this vector.
+ */
+@property (nonatomic) CGVector displacementVector;
 
 /**
  *  Designated initializer.

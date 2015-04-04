@@ -42,7 +42,7 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
     NSMutableArray *_xIndex;
     NSMutableArray *_yIndex;
 }
-@synthesize moveVector = _moveVector, tileSize = _tileSize;
+@synthesize moveVector = _moveVector, displacementVector = _displacementVector, tileSize = _tileSize;
 
 - (id)initWithSize:(CGSize)size
 {
@@ -107,6 +107,12 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
     [_rootNode runAction:[SKAction repeatActionForever:action] withKey:RPRepeatActionKey];
 }
 
+- (void)setDisplacementVector:(CGVector)displacement
+{
+    _displacementVector = displacement;
+    _rootNode.position = CGPointMake(_rootNode.position.x + displacement.dx, _rootNode.position.y + displacement.dy);
+}
+
 #pragma mark - Public Methods
 
 - (SKNode *)dequeueReusableNodeWithIdentifier:(NSString *)identifier
@@ -143,14 +149,14 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
    
 
     //Moving on x axis
-    if(newIndex.x != _currentIndex.x && _moveVector.dx != 0)
+    if(newIndex.x != _currentIndex.x && (_moveVector.dx != 0 || _displacementVector.dx != 0))
     {
-        if(_moveVector.dx>0)
+        if(_moveVector.dx>0 || _displacementVector.dx>0)
         {
             [self autoEnqueueXNodesInverted:NO];
-            for (int i=newIndex.x; i<_currentIndex.x; i++)
+            for (NSInteger i=newIndex.x; i<_currentIndex.x; i++)
             {
-                for (int j=_currentIndex.y-1; j<_calculatedRows+_currentIndex.y+1; j++)
+                for (NSInteger j=_currentIndex.y-1; j<_calculatedRows+_currentIndex.y+1; j++)
                 {
                     RPIndexPoint index = RPIndexPointMake(i, j);
                     SKNode *node = [_dataSource tileScroller:self nodeForIndex:index];
@@ -161,9 +167,9 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
         }else
         {
             [self autoEnqueueXNodesInverted:YES];
-            for (int i=_currentIndex.x+_calculatedCols; i<newIndex.x+_calculatedCols; i++)
+            for (NSInteger i=_currentIndex.x+_calculatedCols; i<newIndex.x+_calculatedCols; i++)
             {
-                for (int j=_currentIndex.y-1; j<_calculatedRows+_currentIndex.y+1; j++)
+                for (NSInteger j=_currentIndex.y-1; j<_calculatedRows+_currentIndex.y+1; j++)
                 {
                     //NSLog(@"%i,%i",i,j);
                     RPIndexPoint index = RPIndexPointMake(i, j);
@@ -178,14 +184,14 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
     }
     
     //Moving on y axis
-    if(newIndex.y != _currentIndex.y && _moveVector.dy != 0)
+    if(newIndex.y != _currentIndex.y && (_moveVector.dy != 0 || _displacementVector.dy != 0))
     {
-        if(_moveVector.dy>0)
+        if(_moveVector.dy>0 || _displacementVector.dy>0)
         {
             [self autoEnqueueYNodesInverted:NO];
-            for (int j=newIndex.y; j<_currentIndex.y; j++)
+            for (NSInteger j=newIndex.y; j<_currentIndex.y; j++)
             {
-                for (int i=_currentIndex.x; i<_calculatedCols+_currentIndex.x; i++)
+                for (NSInteger i=_currentIndex.x; i<_calculatedCols+_currentIndex.x; i++)
                 {
                     RPIndexPoint index = RPIndexPointMake(i, j);
                     SKNode *node = [_dataSource tileScroller:self nodeForIndex:index];
@@ -196,9 +202,9 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
         }else
         {
             [self autoEnqueueYNodesInverted:YES];
-            for (int j=_currentIndex.y+_calculatedRows; j<newIndex.y+_calculatedRows; j++)
+            for (NSInteger j=_currentIndex.y+_calculatedRows; j<newIndex.y+_calculatedRows; j++)
             {
-                for (int i=_currentIndex.x; i<_calculatedCols+_currentIndex.x; i++)
+                for (NSInteger i=_currentIndex.x; i<_calculatedCols+_currentIndex.x; i++)
                 {
                     RPIndexPoint index = RPIndexPointMake(i, j);
                     SKNode *node = [_dataSource tileScroller:self nodeForIndex:index];
@@ -227,9 +233,9 @@ static NSComparisonResult(^yComparisonBlcok)(SKNode *obj1, SKNode *obj2) = ^NSCo
     [_xIndex removeAllObjects];
     [_yIndex removeAllObjects];
     
-    for(int i=_currentIndex.x; i<_currentIndex.x+_calculatedCols; i++)
+    for(NSInteger i=_currentIndex.x; i<_currentIndex.x+_calculatedCols; i++)
     {
-        for (int j=_currentIndex.y; j<_currentIndex.y+_calculatedRows; j++)
+        for (NSInteger j=_currentIndex.y; j<_currentIndex.y+_calculatedRows; j++)
         {
             RPIndexPoint index = RPIndexPointMake(i, j);
             SKNode *node = [_dataSource tileScroller:self nodeForIndex:index];
